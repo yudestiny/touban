@@ -89,7 +89,6 @@ EOF
       '/touban/' => ['controller' => 'calender', 'action' => 'index'],
       '/touban/create' => ['controller' => 'calender', 'action' => 'create'],
       '/touban/register' => ['controller' => 'register', 'action' => 'index'],
-      '/touban/register/confirm' => ['controller' => 'register', 'action' => 'confirm'],
       '/touban/editor' => ['controller' => 'editor', 'action' => 'index'],
       '/touban/shuffle' => ['controller' => 'shuffle', 'action' => 'select'],
       '/touban/shuffle/index' => ['controller' => 'shuffle', 'action' => 'index'],
