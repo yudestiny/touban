@@ -86,27 +86,56 @@ class ShuffleController extends Controller
   {
     date_default_timezone_set('Asia/Tokyo');
     $errors = [];
-    $minList = [];
-    $maxList = [];
     $touban = [];
+    $toubanbi = "";
     $previousToubanDay = '';
     $members = $this->databaseManager->get('Member')->fetchAllName('asc');
 
-    foreach ($members as $member) {
-      for ($i = 0; $i < $member['minLimit']; $i++) {
-        $minList[] = [
-          'id' => $member['id'],
-          'name' => $member['name']
-        ];
-      }
-      for ($i = 0; $i < $member['maxLimit'] - $member['minLimit']; $i++) {
-        $maxList[] = [
-          'id' => $member['id'],
-          'name' => $member['name']
-        ];
+    // 各メンバーに定めた当番回数をもとにタイプごとに最低と最大をそれぞれ配列にまとめる
+    if (!empty($members)) {
+      foreach ($members as $member) {
+        if ($member['type_id'] === 1 || $member['type_id'] === 3) {
+          for ($i = 0; $i < $member['minLimit']; $i++) {
+            $minSupervisorList[] = [
+              'id' => $member['id'],
+              'name' => $member['name'],
+              'type' => $member['type_id']
+            ];
+          }
+          for ($i = 0; $i < $member['maxLimit'] - $member['minLimit']; $i++) {
+            $maxSupervisorList[] = [
+              'id' => $member['id'],
+              'name' => $member['name'],
+              'type' => $member['type_id']
+            ];
+          }
+        }
+        if ($member['type_id'] === 2 || $member['type_id'] === 3) {
+          for ($i = 0; $i < $member['minLimit']; $i++) {
+            $minMemberList[] = [
+              'id' => $member['id'],
+              'name' => $member['name'],
+              'type' => $member['type_id']
+            ];
+          }
+          for ($i = 0; $i < $member['maxLimit'] - $member['minLimit']; $i++) {
+            $maxMemberList[] = [
+              'id' => $member['id'],
+              'name' => $member['name'],
+              'type' => $member['type_id']
+            ];
+          }
+        }
       }
     }
-
+    // タイプごとにリスト化し、要素の少ない方をメンバー数の確認に適用する
+    $supervisorList = array_merge($minSupervisorList, $maxSupervisorList);
+    $memberList = array_merge($minMemberList, $maxMemberList);
+    $judging = $supervisorList;
+    if (count($supervisorList) > count($memberList)) {
+      $judging = $memberList;
+    }
+    
     // 前月・次月リンクが押された場合は、GETパラメーターから年月を取得
     if (isset($_GET['ym'])) {
       $ym = $_GET['ym'];
@@ -114,103 +143,127 @@ class ShuffleController extends Controller
       // 今月の年月を表示
       $ym = date('Y-m');
     }
-
+    
     $timestamp = strtotime($ym . '-01');
     if ($timestamp === false) {
       $ym = date('Y-m');
       $timestamp = strtotime($ym . '-01');
     }
-
+    
     $today = date('Y-m-j');
     $html_title = date('Y年n月', $timestamp);
     $day_count = date('t', $timestamp);
     $youbi = date('w', $timestamp);
-
-
+    
+    
     $prev = date('Y-m', mktime(0, 0, 0, date('m', $timestamp) - 1, 1, date('Y', $timestamp)));
     $next = date('Y-m', mktime(0, 0, 0, date('m', $timestamp) + 1, 1, date('Y', $timestamp)));
-
+    
     // カレンダー作成の準備
     $weeks = [];
     $week = '';
-
+    
     // 第１週目：空のセルを追加
     // 例）１日が火曜日だった場合、日・月曜日の２つ分の空セルを追加する
     $week .= str_repeat('<td></td>', $youbi);
-    var_dump($_SERVER['REQUEST_METHOD']);
+    var_dump(array_column($minSupervisorList,'id'));
       if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['select'])) {
         $toubanbi = $_POST['select'];
       } elseif (!empty($_GET['select'])) {
         $toubanbi = explode(' ', $_GET['select']);
-    }
-    if (!$toubanbi) {
-      $errors[] = '当番日を選択してください';
-    }
-    
-    if (count($toubanbi)*2 >count([...$minList, ...$maxList])) {
-      $errors[] = '選択した当番日数を満たすメンバーの数が足りません';
-    }
-
-    for ($day = 1; $day <= $day_count; $day++, $youbi++) {
-
-      // 2021-06-3
-      $date = $ym . '-' . $day;
-
-      if ($today == $date) {
-        // 今日の日付の場合は、class="today"をつける
-        $week .= '<td class="today">' . $day;
-      } else {
-        $week .= '<td>' . ' ' . $day;
       }
+      // 選択した当番日数に対して割り当てられるメンバーが不足している場合エラーにて処理
+      if ($toubanbi && count($toubanbi) >count($judging)) {
+        $errors[] = '選択した当番日数を満たすメンバーの数が足りません';
+      }
+      if (empty($errors)) {
+        for ($day = 1; $day <= $day_count; $day++, $youbi++) {
+          
+          // 2021-06-3
+          $date = $ym . '-' . $day;
 
-      if (!empty($toubanbi) && in_array($day, $toubanbi) && count(array_count_values($minList)) > 1) {
-        if (count($minList) < 2) {
-          $minList = [...$minList, ...$maxList];
-        }
-        shuffle($minList);
-        if ($previousToubanDay) {
-
-          while (true) {
-            $inARow = (in_array($minList[0]['id'], array_column($touban[$previousToubanDay],'id')) || in_array($minList[1]['id'], array_column($touban[$previousToubanDay],'id')));
-            if ($minList[0]['id'] == $minList[1]['id'] || $inARow) {
-              shuffle($minList);
-            } else {
-              break;
-            }
-          }
+        if ($today == $date) {
+          // 今日の日付の場合は、class="today"をつける
+          $week .= '<td class="today">' . $day;
         } else {
-          while (true) {
-            if ($minList[0]['id'] == $minList[1]['id']) {
-              shuffle($minList);
-            } else {
-              break;
+          $week .= '<td>' . ' ' . $day;
+        }
+
+        if (count($minSupervisorList) < 2) {
+          $minSupervisorList = [...$minSupervisorList, ...$maxSupervisorList];
+        } elseif (count($minMemberList) < 2) {
+          $minMemberList = [...$minMemberList, ...$maxMemberList];
+        }
+        if (var_dump(!empty($toubanbi) && in_array($day, $toubanbi) && count(array_count_values(array_column($minSupervisorList,'id'))) > 0 && count(array_count_values(array_column($minMemberList,'id'))) > 0)) {
+          
+          shuffle($minSupervisorList);
+          shuffle($minMemberList);
+          if ($previousToubanDay) {
+            while (true) {
+              $inARow = (in_array($minSupervisorList[0]['id'], array_column($touban[$previousToubanDay],'id')) || in_array($minMemberList[0]['id'], array_column($touban[$previousToubanDay],'id')));
+              if ($minSupervisorList[0]['id'] === $minMemberList[0]['id'] || $inARow) {
+                shuffle($minSupervisorList);
+                shuffle($minMemberList); 
+              } else {
+                break;
+              }
+            }
+          } else {
+            while (true) {
+              if ($minSupervisorList[0]['id'] === $minMemberList[0]['id']) {
+                shuffle($minList);
+              } else {
+                break;
+              }
             }
           }
+          $touban[$day] = [$minSupervisorList[0],$minMemberList[0]];
+
+          // 当番に選ばれた人のタイプが中堅(mid)のときもう片方のリストからも一つ消す
+          // リスト化した時に両方のリストに加えているため
+          if ($minSupervisorList[0]['type_id'] === 3) {
+            foreach($minMemberList as $index => $member) {
+              if ($minSupervisorList[0]['id'] === $member['id']) {
+                unset($minMemberList[$index]);
+                break;
+              }
+            }
+          }
+          if ($minMemberList[0]['type_id'] === 3) {
+            foreach($minSupervisorList as $index => $supervisor) {
+              if ($minMemberList[0]['id'] === $supervisor['id']) {
+                unset($minSupervisorList[$index]);
+                break;
+              }
+            }
+          }
+
+          array_splice($minSupervisorList, 0, 1);
+          array_splice($minMemberList, 0, 1);
+          $week .= ' ' . $touban[$day][0]['name'] . ' ' . $touban[$day][1]['name'];
+          $previousToubanDay = $day;
         }
-        $touban[$day] = [$minList[0],$minList[1]];
-        // array_splice($minList, 0, 2);
-        $week .= ' ' . $touban[$day][0]['name'] . ' ' . $touban[$day][1]['name'];
-        $previousToubanDay = $day;
-      }
 
-      $week .= '</td>';
+        $week .= '</td>';
 
-      // 週終わり、または、月終わりの場合
-      if ($youbi % 7 == 6 || $day == $day_count) {
+        // 週終わり、または、月終わりの場合
+        if ($youbi % 7 == 6 || $day == $day_count) {
 
-        if ($day == $day_count) {
-          // 月の最終日の場合、空セルを追加
-          // 例）最終日が水曜日の場合、木・金・土曜日の空セルを追加
-          $week .= str_repeat('<td></td>', 6 - $youbi % 7);
+          if ($day == $day_count) {
+            // 月の最終日の場合、空セルを追加
+            // 例）最終日が水曜日の場合、木・金・土曜日の空セルを追加
+            $week .= str_repeat('<td></td>', 6 - $youbi % 7);
+          }
+
+          // weeks配列にtrと$weekを追加する
+          $weeks[] = '<tr>' . $week . '</tr>';
+
+          // weekをリセット
+          $week = '';
         }
-
-        // weeks配列にtrと$weekを追加する
-        $weeks[] = '<tr>' . $week . '</tr>';
-
-        // weekをリセット
-        $week = '';
       }
     }
+    var_dump($toubanbi);
     // header('Location:/');
     session_start();
     $_SESSION['data'] = $touban;
