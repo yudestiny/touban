@@ -9,9 +9,11 @@ class EditorController extends Controller
     $current = [];
     $current['id'] = $_GET['id'];
 
-    if (!empty($_POST['name'])) {
+    $types = $this->databaseManager->get('Type')->fetchAllType();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $name = trim(mb_convert_kana($_POST['name'], "s", 'UTF-8'));
-      $limit = trim(mb_convert_kana($_POST['limit'], "s", 'UTF-8'));
+      $maxLimit = trim(mb_convert_kana($_POST['maxLimit'], "s", 'UTF-8'));
+      $minLimit = trim(mb_convert_kana($_POST['minLimit'], "s", 'UTF-8'));
 
       if (!strlen($name)) {
         $errors['name'] = '名前を入力してください';
@@ -19,17 +21,17 @@ class EditorController extends Controller
         $errors['name'] = '名前は20文字以内で入力してください';
       }
 
-      if (!strlen($limit)) {
-        $errors['limit'] = '当番最大回数を入力してください';
-      } elseif ($limit > 5) {
-        $errors['limit'] = '当番最大回数は最大5回です';
+      if (!strlen($maxLimit)) {
+        $errors['maxLimit'] = '当番最大回数を入力してください';
+      } elseif ($maxLimit > 5) {
+        $errors['maxLimit'] = '当番最大回数は最大5回です';
       }
 
       if (empty($errors)) {
         $this->databaseManager->get('Member')->beginTransaction();
 
         try {
-          $this->databaseManager->get('Member')->update($current['id'], $name, $limit);
+          // $this->databaseManager->get('Member')->update($current['id'], $name, $limit);
           $errors[] = $this->databaseManager->get('Member')->commit();
         } catch (Exception $e) {
           $this->databaseManager->get('Member')->rollBack();
@@ -43,7 +45,9 @@ class EditorController extends Controller
     foreach ($members as $member) {
       if ($current['id'] == $member['id']) {
         $current['name'] = $member['name'];
-        $current['limit'] = $member['maxLimit'];
+        $current['type'] = $member['type_id'];
+        $current['maxLimit'] = $member['maxLimit'];
+        $current['minLimit'] = $member['minLimit'];
       }
     }
 
@@ -52,6 +56,7 @@ class EditorController extends Controller
       'members' => $members,
       'errors' => $errors,
       'current' => $current,
+      'types' => $types,
     ]);
   }
 }
