@@ -24,11 +24,12 @@ class Member extends DatabaseModel
     return $this->execute($sql, $params);
   }
 
-  public function update($id, $name, $max, $min)
+  public function update($id, $name, $type, $max, $min)
   {
     $params = [];
-    $sql = 'UPDATE members SET name=(:name), maxLimit=(:maxLimit), minLimit=(:minLimit) WHERE id=(:id)';
+    $sql = 'UPDATE members SET name=(:name), type_id=(:type), maxLimit=(:maxLimit), minLimit=(:minLimit) WHERE id=(:id)';
     $params[] = [':name', $name, PDO::PARAM_STR];
+    $params[] = [':type', $type, PDO::PARAM_STR];
     $params[] = [':maxLimit', $max, PDO::PARAM_STR];
     $params[] = [':minLimit', $min, PDO::PARAM_STR];
     $params[] = [':id', $id, PDO::PARAM_STR];
