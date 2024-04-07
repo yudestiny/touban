@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <h3 class="mb-4"><span class="mx-3"><?php echo $html_title ?></span></h3>
-<form action="/shuffle/index?ym=<?= $ym ?>" method="POST">
+<form action="shuffle/index?ym=<?= $ym ?>" method="POST">
   <table class="table table-bordered">
     <tr>
       <th>日</th>
@@ -11,14 +11,14 @@
       <th>金</th>
       <th>土</th>
     </tr>
-      <? foreach ($weeks as $week) : ?>
-        <? echo $week; ?>
-      <? endforeach; ?>
+      <?php foreach ($weeks as $week) : ?>
+        <?= $week; ?>
+      <?php endforeach; ?>
   </table>
 <button type="submit">当番を割り振る</button>
     </form>
   <div>
-    <a href="/">戻る</a>
+    <a href="/touban">戻る</a>
   </div>
 </div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

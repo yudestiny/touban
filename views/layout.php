@@ -9,10 +9,10 @@
 </head>
 
 <body>
-  <header>
-    <a href="/"><img src="https://free-materials.com/adm/wp-content/uploads/2018/12/logo_v04-750x750.png" alt=""></a>
-    <?php echo $content; ?>
+  <header class="container">
+    <a href="/touban"><img style="width: 100px; height: 100px;" class="img-thumbnail" src="https://free-materials.com/adm/wp-content/uploads/2018/12/logo_v04-750x750.png" alt=""></a>
   </header>
+  <?= $content; ?>
 </body>
 
 </html>

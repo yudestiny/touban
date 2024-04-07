@@ -13,21 +13,24 @@ class Member extends DatabaseModel
     return $this->fetchAll($sql);
   }
 
-  public function insert($name, $limit)
+  public function insert($name, $type, $max, $min)
   {
     $params = [];
-    $sql = 'INSERT INTO members (name, maxLimit) VALUES(:name, :maxLimit)';
+    $sql = 'INSERT INTO members (name, type_id, maxLimit, minLimit) VALUES(:name, :type_id, :maxLimit, :minLimit)';
     $params[] = [':name', $name, PDO::PARAM_STR];
-    $params[] = [':maxLimit', $limit, PDO::PARAM_STR];
+    $params[] = [':type_id', $type, PDO::PARAM_STR];
+    $params[] = [':maxLimit', $max, PDO::PARAM_STR];
+    $params[] = [':minLimit', $min, PDO::PARAM_STR];
     return $this->execute($sql, $params);
   }
 
-  public function update($id, $name, $limit)
+  public function update($id, $name, $max, $min)
   {
     $params = [];
-    $sql = 'UPDATE members SET name=(:name), maxLimit=(:maxLimit) WHERE id=(:id)';
+    $sql = 'UPDATE members SET name=(:name), maxLimit=(:maxLimit), minLimit=(:minLimit) WHERE id=(:id)';
     $params[] = [':name', $name, PDO::PARAM_STR];
-    $params[] = [':maxLimit', $limit, PDO::PARAM_STR];
+    $params[] = [':maxLimit', $max, PDO::PARAM_STR];
+    $params[] = [':minLimit', $min, PDO::PARAM_STR];
     $params[] = [':id', $id, PDO::PARAM_STR];
     return $this->execute($sql, $params);
   }

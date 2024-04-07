@@ -7,7 +7,7 @@
   <?php endforeach; ?>
 <?php endif; ?>
 <div class="container mt-5">
-  <h3 class="mb-4"><a href="/?ym=<?= $prev ?>">&lt;</a><span class="mx-3"><?php echo $html_title ?></span><a href="/?ym=<?= $next ?>">&gt;</a></h3>
+  <h3 class="mb-4"><a href="?ym=<?= $prev ?>">&lt;</a><span class="mx-3"><?php echo $html_title ?></span><a href="?ym=<?= $next ?>">&gt;</a></h3>
   <form action="/">
     <table class="table table-bordered">
       <tr>
@@ -23,7 +23,15 @@
         <?php echo $week; ?>
       <?php endforeach; ?>
     </table>
+    
+  <?php if ($action === 'create') : ?>
+    <input type="submit" value="登録する">
+    <div><a href="/touban">戻る</a></div>
+  <?php endif; ?>
   </form>
-  <h2><a href="/shuffle?ym=<?= $ym ?>">当番日を選択する</a></h2>
-  <div><a href="/register">社員を登録する</a></div>
+  <?php if ($action === 'index') : ?>
+    <h2><a href="shuffle?ym=<?= $ym ?>">当番日を選択する</a></h2>
+    <h2><a href="create?ym=<?= $ym ?>">カレンダー上のメンバーの割り当て・編集</a></h2>
+    <div><a href="register">メンバーを新規登録する</a></div>
+  <?php endif; ?>
 </div>

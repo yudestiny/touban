@@ -10,9 +10,9 @@
       <th>金</th>
       <th>土</th>
     </tr>
-    <? foreach ($weeks as $week) : ?>
-      <? echo $week; ?>
-    <? endforeach; ?>
+    <?php foreach ($weeks as $week) : ?>
+      <?= $week; ?>
+    <?php endforeach; ?>
   </table>
   <?php if ($errors) : ?>
     <?php foreach ($errors as $error) : ?>
@@ -21,13 +21,13 @@
   <?php endif; ?>
     <?php if ($toubanbi) : ?>
     <h2><a href="?ym=<?= $ym ?>&select=<?= $toubanbi ?>">もう一度割り振る</a></h2>
-    <form action="/" method="POST" name="register">
+    <form action="/touban" method="POST" name="register">
       <input type="submit" value="登録する">
+    </form>
     <?php else : ?>
       <div>
-        <a href="/">戻る</a>
+        <a href="/touban">戻る</a>
       </div>
     <?php endif; ?>
     <!-- <div><a href="" onclick="document.register.submit();">登録する</a></div> -->
-    </form>
 </div>

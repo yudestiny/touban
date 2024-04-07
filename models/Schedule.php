@@ -18,22 +18,22 @@ EOT;
     $this->createTable($tableName, $sql);
   }
 
-  public function insert($tableName, $date, $member)
+  public function insert($date, $month, $members)
   {
-    $sql = "INSERT INTO {$tableName} (date, member1, member2) VALUES(:date, :member1, :member2)";
+    $sql = "INSERT INTO schedule (date, month, member_id) VALUES(:date, :month, :member_id)";
     $params = [];
 
-    // foreach ($schedule as $date => $member) {
+    foreach ($members as $member) {
       $params[] = [':date', $date, PDO::PARAM_STR];
-      $params[] = [':member1', $member[0], PDO::PARAM_STR];
-      $params[] = [':member2', $member[1], PDO::PARAM_STR];
+      $params[] = [':member_id', $member, PDO::PARAM_STR];
+      $params[] = [':month', $month, PDO::PARAM_STR];
       return $this->execute($sql, $params);
-    // }
+    }
   }
 
-    public function fetchAllMember($tableName)
+    public function fetchAllMember($month)
     {
-      $sql = "SELECT * FROM {$tableName}";
+      $sql = "SELECT * FROM schedule WHERE month = {$month}";
 
       return $this->fetchAll($sql);
     }

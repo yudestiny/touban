@@ -15,8 +15,8 @@ class Application
     $this->databaseManager = new DatabaseManager();
     $this->databaseManager->connect(
       [
-        'hostnameAndDatabase' => 'mysql:charset=UTF8;host=aws-and-infra-web.ckk4tnzpw1vs.ap-northeast-1.rds.amazonaws.com;dbname=aws_and_infra',
-        'username' => 'aws_and_infra',
+        'hostnameAndDatabase' => 'mysql:charset=UTF8;host=localhost;dbname=php_calendar',
+        'username' => 'root',
         'password' => 'password'
       ]
       );
@@ -86,11 +86,13 @@ EOF
   private function registerRoute()
   {
     return [
-      '/' => ['controller' => 'calender', 'action' => 'index'],
-      '/register' => ['controller' => 'register', 'action' => 'index'],
-      '/editor' => ['controller' => 'editor', 'action' => 'index'],
-      '/shuffle' => ['controller' => 'shuffle', 'action' => 'select'],
-      '/shuffle/index' => ['controller' => 'shuffle', 'action' => 'index'],
+      '/touban/' => ['controller' => 'calender', 'action' => 'index'],
+      '/touban/create' => ['controller' => 'calender', 'action' => 'create'],
+      '/touban/register' => ['controller' => 'register', 'action' => 'index'],
+      '/touban/register/confirm' => ['controller' => 'register', 'action' => 'confirm'],
+      '/touban/editor' => ['controller' => 'editor', 'action' => 'index'],
+      '/touban/shuffle' => ['controller' => 'shuffle', 'action' => 'select'],
+      '/touban/shuffle/index' => ['controller' => 'shuffle', 'action' => 'index'],
     ];
   }
 }

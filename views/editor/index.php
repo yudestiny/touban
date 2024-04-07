@@ -5,13 +5,13 @@
 </div>
 <?php if (empty($_POST['btn_submit']) && !empty($_SESSION['success_message'])) : ?>
   <p class="success_message"><?php echo htmlspecialchars($_SESSION['success_message'], ENT_QUOTES, 'UTF-8'); ?></p>
-<? endif; ?>
+<?php endif; ?>
 <?php unset($_SESSION['success_message']); ?>
-<? if (!empty($errors)) : ?>
-  <? foreach ($errors as $error) : ?>
-    <? echo $error; ?>
-  <? endforeach; ?>
-<? endif; ?>
+<?php if (!empty($errors)) : ?>
+  <?php foreach ($errors as $error) : ?>
+    <?= $error; ?>
+  <?php endforeach; ?>
+<?php endif; ?>
 <div>
   <form action="./editor?id=<?= $current['id'] ?>" method='POST'>
     <label for="name">名前</label>
@@ -21,4 +21,4 @@
     <input type="submit" value="変更する">
   </form>
 </div>
-<div><a href="/register">登録/編集ページに戻る</a></div>
+<div><a href="register">登録/編集ページに戻る</a></div>

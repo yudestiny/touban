@@ -35,7 +35,7 @@ class DatabaseModel
 
   public function rollBack()
   {
-    if ($this->dbh->inTransaction()) {
+    if (!$this->dbh->inTransaction()) {
       throw new Exception('う');
     }
     $this->dbh->rollBack();
