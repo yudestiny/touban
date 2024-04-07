@@ -25,7 +25,9 @@ class RegisterController extends Controller
 
       if (!strlen($max)) {
         $errors['max'] = '当番最大回数を入力してください';
-      }  elseif ($min > $max) {
+      } elseif ($max > 5) {
+        $errors['max'] = '当番最大回数は最大5回です';
+      } elseif ($min > $max) {
         $errors['max'] = '当番最小回数が当番最大回数を上回っています';
       }
       if(!strlen($min)) {

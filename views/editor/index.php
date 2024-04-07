@@ -22,7 +22,8 @@
       <?php if($type['id'] === $current['type']) : ?>
         selected
       <?php endif ?>
-    ><?= ($type['name']) ?></option>
+    >
+    <?= ($type['name']) ?></option>
       <?php endforeach ?>
     </select>
     <label for="maxLimit">当番最大回数</label>
