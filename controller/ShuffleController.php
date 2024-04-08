@@ -166,7 +166,6 @@ class ShuffleController extends Controller
     // 第１週目：空のセルを追加
     // 例）１日が火曜日だった場合、日・月曜日の２つ分の空セルを追加する
     $week .= str_repeat('<td></td>', $youbi);
-    var_dump(array_column($minSupervisorList,'id'));
       if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['select'])) {
         $toubanbi = $_POST['select'];
       } elseif (!empty($_GET['select'])) {
@@ -176,6 +175,19 @@ class ShuffleController extends Controller
       if ($toubanbi && count($toubanbi) >count($judging)) {
         $errors[] = '選択した当番日数を満たすメンバーの数が足りません';
       }
+    
+      // shuffle()は要素が２つ以上ないとエラーになるためif文で確認した後処理、冗長化するため関数化
+      function shuffleTouban ($supervisorList, $memberList, $NoDuplicatedList) {
+        if (count($NoDuplicatedList['supervisor']) > 1) {
+          shuffle($supervisorList);
+        }
+        if (count($NoDuplicatedList['member']) > 1) {
+          shuffle($memberList);
+        }
+
+        return [$supervisorList, $memberList];
+      };
+
       if (empty($errors)) {
         for ($day = 1; $day <= $day_count; $day++, $youbi++) {
           
@@ -189,21 +201,28 @@ class ShuffleController extends Controller
           $week .= '<td>' . ' ' . $day;
         }
 
-        if (count($minSupervisorList) < 2) {
+        // 最低当番回数の登録されたメンバーがすべて割り振られた場合、最大当番回数の登録分を割り振るための処理
+        if (!count($minSupervisorList)) {
           $minSupervisorList = [...$minSupervisorList, ...$maxSupervisorList];
-        } elseif (count($minMemberList) < 2) {
+          $maxSupervisorList = [];
+        } elseif (!count($minMemberList)) {
           $minMemberList = [...$minMemberList, ...$maxMemberList];
+          $maxMemberList = [];
         }
-        if (var_dump(!empty($toubanbi) && in_array($day, $toubanbi) && count(array_count_values(array_column($minSupervisorList,'id'))) > 0 && count(array_count_values(array_column($minMemberList,'id'))) > 0)) {
-          
-          shuffle($minSupervisorList);
-          shuffle($minMemberList);
+
+        // 当番を残り少なくとも一回割り当てられるメンバーの数を重複なしにそれぞれ表現
+        $NoDuplicatedList = [
+          'supervisor' => array_count_values(array_column($minSupervisorList,'id')),
+          'member' => array_count_values(array_column($minMemberList,'id'))
+        ];
+
+        if (!empty($toubanbi) && in_array($day, $toubanbi) && count($NoDuplicatedList['supervisor']) > 0 && count($NoDuplicatedList['member']) > 0) {
+          list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList, $NoDuplicatedList);
           if ($previousToubanDay) {
+            $inARow = (in_array($minSupervisorList[0]['id'], array_column($touban[$previousToubanDay],'id')) || in_array($minMemberList[0]['id'], array_column($touban[$previousToubanDay],'id')));
             while (true) {
-              $inARow = (in_array($minSupervisorList[0]['id'], array_column($touban[$previousToubanDay],'id')) || in_array($minMemberList[0]['id'], array_column($touban[$previousToubanDay],'id')));
               if ($minSupervisorList[0]['id'] === $minMemberList[0]['id'] || $inARow) {
-                shuffle($minSupervisorList);
-                shuffle($minMemberList); 
+                list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList, $NoDuplicatedList);
               } else {
                 break;
               }
@@ -211,7 +230,7 @@ class ShuffleController extends Controller
           } else {
             while (true) {
               if ($minSupervisorList[0]['id'] === $minMemberList[0]['id']) {
-                shuffle($minList);
+                list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList, $NoDuplicatedList);  
               } else {
                 break;
               }
@@ -221,7 +240,7 @@ class ShuffleController extends Controller
 
           // 当番に選ばれた人のタイプが中堅(mid)のときもう片方のリストからも一つ消す
           // リスト化した時に両方のリストに加えているため
-          if ($minSupervisorList[0]['type_id'] === 3) {
+          if ($minSupervisorList[0]['type'] === 3) {
             foreach($minMemberList as $index => $member) {
               if ($minSupervisorList[0]['id'] === $member['id']) {
                 unset($minMemberList[$index]);
@@ -229,7 +248,7 @@ class ShuffleController extends Controller
               }
             }
           }
-          if ($minMemberList[0]['type_id'] === 3) {
+          if ($minMemberList[0]['type'] === 3) {
             foreach($minSupervisorList as $index => $supervisor) {
               if ($minMemberList[0]['id'] === $supervisor['id']) {
                 unset($minSupervisorList[$index]);
@@ -245,7 +264,6 @@ class ShuffleController extends Controller
         }
 
         $week .= '</td>';
-
         // 週終わり、または、月終わりの場合
         if ($youbi % 7 == 6 || $day == $day_count) {
 
