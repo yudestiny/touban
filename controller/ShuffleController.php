@@ -203,11 +203,9 @@ class ShuffleController extends Controller
 
         // 最低当番回数の登録されたメンバーがすべて割り振られた場合、最大当番回数の登録分を割り振るための処理
         if (!count($minSupervisorList)) {
-          echo(1);
           $minSupervisorList = [...$minSupervisorList, ...$maxSupervisorList];
           $maxSupervisorList = [];
         } elseif (!count($minMemberList)) {
-          echo(2);
           $minMemberList = [...$minMemberList, ...$maxMemberList];
           $maxMemberList = [];
         }
@@ -230,7 +228,6 @@ class ShuffleController extends Controller
               }
             }
           } else {
-            echo(2);
             while (true) {
               if ($minSupervisorList[0]['id'] === $minMemberList[0]['id']) {
                 list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList, $NoDuplicatedList);  
