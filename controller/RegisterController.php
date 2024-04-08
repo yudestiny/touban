@@ -5,13 +5,8 @@ class RegisterController extends Controller
   public function index()
   {
     $errors = [];
-    $types = $this->databaseManager->get('Type')->fetchAllType();
-    var_dump($_POST);
-    var_dump($_SERVER['REQUEST_METHOD']);
-    // var_dump($_POST['max']);
-    // var_dump($_POST['min']);
+    $types = array_column($this->databaseManager->get('Type')->fetchAllType(), 'name', 'id');
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      echo "1111";
       $name = trim(mb_convert_kana($_POST['name'], 's', 'UTF-8'));
       $type = $_POST['type'];
       $max = $_POST['max'];
@@ -37,7 +32,6 @@ class RegisterController extends Controller
       }
 
         if (empty($errors)) {
-          var_dump('2222');
           $this->databaseManager->get('Member')->beginTransaction();
 
           try{

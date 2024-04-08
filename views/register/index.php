@@ -18,8 +18,8 @@
     <input type="text" id="name" name="name">
     <label for="max">タイプ</label>
     <select name="type" >
-      <?php foreach($types as $type) : ?>
-    <option value="<?= ($type['id']) ?>"><?= ($type['name']) ?></option>
+      <?php foreach($types as $id => $name) : ?>
+    <option value="<?= $id ?>"><?= $name ?></option>
       <?php endforeach ?>
     </select>
     <label for="max">当番最大回数</label>
@@ -34,7 +34,7 @@
     <?php foreach ($members as $member) : ?>
       <p>
         <a href="editor?id=<?= $member['id'] ?>"><?= $member['name'];  ?></a>
-        　　当番最大回数:<?= $member['maxLimit']; ?>　　当番最小回数:<?= $member['minLimit']; ?>
+            タイプ：<?= $types[$member['type_id']] ?>,  当番回数: 最大<?= $member['maxLimit']; ?>, 最小:<?= $member['minLimit']; ?>
       </p>
     <?php endforeach; ?>
   </div>
