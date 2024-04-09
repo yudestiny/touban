@@ -20,6 +20,8 @@ EOT;
 
   public function insert($year, $month, $members)
   {
+    $sql = "DELETE FROM schedule WHERE id IN (SELECT id FROM schedule WHERE year = {$year} and month = {$month})";
+    $this->execute($sql);
     $sql = "INSERT INTO schedule (year, month, day, member_id) VALUES(:year, :month, :day, :member_id)";
     $params = [];
     var_dump($year);
