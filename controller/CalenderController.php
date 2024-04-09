@@ -172,15 +172,22 @@ class CalenderController extends Controller
     session_start();
     session_regenerate_id();
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['member'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-      $member = $_POST['member'];
+      $touban = $_POST['touban'];
+      $day = $_POST['day'];
+      var_dump($touban);
+      var_dump($day);
+      $assignedMembers = [];
+      for ($i = 0; $i < count($day); $i+=2) {
+        $assignedMembers[$day[$i]] = [$touban[$i], $touban[$i+1]];
+      }
+      $ym = $_POST['ym'];
+      $year = mb_substr($ym, 0, 4);
+      $month = mb_substr($ym, -2);
       $this->databaseManager->get('Schedule')->beginTransaction();
       try {
-        foreach ($member as $m) {
-          $this->databaseManager->get('Schedule')->insert($date, $month, array_column($members, 'id'));
-        }
-
+        $this->databaseManager->get('Schedule')->insert($year, $month, $assignedMembers);
         $this->databaseManager->makeDbhNull();
         $errors[] = $this->databaseManager->get('Schedule')->commit();
       } catch (Exception $e) {
