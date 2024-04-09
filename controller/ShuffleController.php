@@ -305,6 +305,7 @@ class ShuffleController extends Controller
         'youbi' => $youbi,
         'weeks' => $weeks,
         'week' => $week,
+        'touban' => $touban,
         'toubanbi' => $toubanbi,
         'errors' => $errors,
       ]
