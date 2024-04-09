@@ -68,21 +68,15 @@ class CalenderController extends Controller
       $_SESSION = [];
 
     }
-
-    // $scheduleOfThisMonth = 'schedule_of_' . str_replace('-', '', $ym);
-    // $dataExistence = $this->databaseManager->get('Schedule')->checkTableExistence($scheduleOfThisMonth);
-
-    // if ($dataExistence) {
-      $scheduleData = $this->databaseManager->get('Schedule')->fetchAllMember(str_replace('-', '', $ym));
-    // }
-
+    // 当該月の当番データとメンバーデータの取得
+    $scheduleData = $this->databaseManager->get('Schedule')->fetchAllMember($ym);
+    $members = $this->databaseManager->get('member')->fetchAllName();
+    $members = array_column($members, 'name', 'id');
     $this->databaseManager->makeDbhNull();
 
     for ($day = 1; $day <= $day_count; $day++, $youbi++) {
-
-      // 2021-06-3
+      // 例：2021-06-3
       $date = $ym . '-' . $day;
-
       if ($today == $date) {
         // 今日の日付の場合は、class="today"をつける
         $week .= '<td class="today">' . $day;
@@ -90,10 +84,10 @@ class CalenderController extends Controller
         $week .= '<td>' . ' ' . $day;
       }
 
-      if (!empty($scheduleData)) {
+      if (!empty($scheduleData) && in_array($day, array_column($scheduleData, 'day'))) {
           foreach ($scheduleData as $data) {
-              if ($day == $data['date']) {
-                  $week .= '   ' . $data['member1'] . '  ' .$data['member2'];
+              if ($day == $data['day']) {
+                  $week .= '   ' . $members[$data['member_id']];
               }
           }
       }

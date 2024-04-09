@@ -37,9 +37,11 @@ EOT;
     }
   }
 
-    public function fetchAllMember($month)
+    public function fetchAllMember($ym)
     {
-      $sql = "SELECT * FROM schedule WHERE month = {$month}";
+      $year = mb_substr($ym, 0, 4);
+      $month = mb_substr($ym, -2);
+      $sql = "SELECT * FROM schedule WHERE month = {$month} and year = {$year}";
 
       return $this->fetchAll($sql);
     }
