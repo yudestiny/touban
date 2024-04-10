@@ -21,14 +21,13 @@
   <?php endif; ?>
     <?php if ($toubanbi) : ?>
     <h2><a href="?ym=<?= $ym ?>&select=<?= $toubanbi ?>">もう一度割り振る</a></h2>
-    <form action="/touban/create" method="POST" name="register">
+    <form action="/touban/?ym=<?= $ym ?>" method="POST" name="register">
     <input type="hidden" name="ym" value="<?= $ym ?>">
     <?php foreach ($touban as $day => $members) : ?>
       <input type="hidden" name="day[]" value="<?= $day ?>">
       <input type="hidden" name="day[]" value="<?= $day ?>">
       <input type="hidden" name="touban[]" value="<?= $members[0]['id'] ?>">
       <input type="hidden" name="touban[]" value="<?= $members[1]['id'] ?>">
-    <?php var_dump($touban) ?>
     <?php endforeach ?>
       <input type="submit" value="登録する">
     </form>

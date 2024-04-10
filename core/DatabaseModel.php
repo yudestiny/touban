@@ -62,6 +62,7 @@ class DatabaseModel
 
   protected function fetchAll($sql)
   {
+    var_dump($sql);
     $results = $this->dbh->query($sql);
 
     if (!$results) {
