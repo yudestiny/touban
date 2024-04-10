@@ -45,18 +45,20 @@ class CalenderController extends Controller
     session_start();
     session_regenerate_id();
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['month'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-      $month = $_SESSION['month'];
-      $schedule = $_SESSION['data'];
-      // $this->databaseManager->get('Schedule')->registerSchedule($month);
+      $touban = $_POST['touban'];
+      $day = $_POST['day'];
+      $assignedMembers = [];
+      for ($i = 0; $i < count($day); $i+=2) {
+        $assignedMembers[$day[$i]] = [$touban[$i], $touban[$i+1]];
+      }
+      $yemo = $_POST['ym'];
+      $year = mb_substr($yemo, 0, 4);
+      $month = mb_substr($yemo, -2);
       $this->databaseManager->get('Schedule')->beginTransaction();
       try {
-        foreach ($schedule as $date => $members) {
-          $this->databaseManager->get('Schedule')->insert($date, $month, array_column($members, 'id'));
-        }
-
-        $this->databaseManager->makeDbhNull();
+        $this->databaseManager->get('Schedule')->insert($year, $month, $assignedMembers);
         $errors[] = $this->databaseManager->get('Schedule')->commit();
       } catch (Exception $e) {
         print('Error:' . $e->getMessage());
@@ -71,8 +73,8 @@ class CalenderController extends Controller
     // 当該月の当番データとメンバーデータの取得
     $scheduleData = $this->databaseManager->get('Schedule')->fetchAllMember($ym);
     $members = $this->databaseManager->get('member')->fetchAllName();
-    $members = array_column($members, 'name', 'id');
     $this->databaseManager->makeDbhNull();
+    $members = array_column($members, 'name', 'id');
 
     for ($day = 1; $day <= $day_count; $day++, $youbi++) {
       // 例：2021-06-3
