@@ -134,7 +134,7 @@ class CalenderController extends Controller
 
     date_default_timezone_set('Asia/Tokyo');
     $members = $this->databaseManager->get('Member')->fetchAllName('asc');
-
+    $membersId = array_column($members, 'name', 'id');
     // 前月・次月リンクが押された場合は、GETパラメーターから年月を取得
     if (isset($_GET['ym'])) {
       $ym = $_GET['ym'];
@@ -197,15 +197,14 @@ class CalenderController extends Controller
 
     }
 
-    // $scheduleOfThisMonth = 'schedule_of_' . str_replace('-', '', $ym);
-    // $dataExistence = $this->databaseManager->get('Schedule')->checkTableExistence($scheduleOfThisMonth);
-
-    // if ($dataExistence) {
-      $scheduleData = $this->databaseManager->get('Schedule')->fetchAllMember(str_replace('-', '', $ym));
-    // }
+    $scheduleData = $this->databaseManager->get('Schedule')->fetchAllMember(str_replace('-', '', $ym));
 
     $this->databaseManager->makeDbhNull();
 
+    $option = '';
+    foreach ($members as $member) {
+      $option .= "<option value=\"{$member['id']}\" >{$member['name']}</option>";
+    }
     for ($day = 1; $day <= $day_count; $day++, $youbi++) {
 
       // 2021-06-3
@@ -220,17 +219,14 @@ class CalenderController extends Controller
 
       if (!empty($scheduleData)) {
           foreach ($scheduleData as $data) {
-              if ($day == $data['date']) {
-                  $week .= '   ' . $data['member'];
+              if ($day == $data['day']) {
+                  $week .= "<input type=\"hidden\" value=\"{$day}\" name=\"day[]\">";
+                  $week .= "<select name=\"touban[]\">{$option}</select>";
               }
           }
       }
-      $option = '';
-      foreach ($members as $member) {
-        $option .= "<option value=\"{$member['id']}\" >{$member['name']}</option>";
-      }
+      $week .= "</td>";
 
-      $week .= "{$day}<select value=\"{$day}\" name=\"member\">{$option}</select></td>";
 
       // 週終わり、または、月終わりの場合
       if ($youbi % 7 == 6 || $day == $day_count) {

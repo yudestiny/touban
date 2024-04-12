@@ -7,8 +7,8 @@
   <?php endforeach; ?>
 <?php endif; ?>
 <div class="container mt-5">
-  <h3 class="mb-4"><a href="?ym=<?= $prev ?>">&lt;</a><span class="mx-3"><?php echo $html_title ?></span><a href="?ym=<?= $next ?>">&gt;</a></h3>
-  <form action="/">
+  <h3 class="mb-4"><a href="?ym=<?= $prev ?>">&lt;</a><span class="mx-3"><?= $html_title ?></span><a href="?ym=<?= $next ?>">&gt;</a></h3>
+  <form action="/touban/" method="POST">
     <table class="table table-bordered">
       <tr>
         <th>日</th>
@@ -20,13 +20,14 @@
         <th>土</th>
       </tr>
       <?php foreach ($weeks as $week) : ?>
-        <?php echo $week; ?>
+        <?= $week; ?>
       <?php endforeach; ?>
     </table>
     
   <?php if ($action === 'create') : ?>
+    <input type="hidden" value=<?= $ym ?> name="ym">
     <input type="submit" value="登録する">
-    <div><a href="/touban">戻る</a></div>
+    <div><a href="/touban/">戻る</a></div>
   <?php endif; ?>
   </form>
   <?php if ($action === 'index') : ?>
