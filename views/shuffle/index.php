@@ -25,9 +25,8 @@
     <input type="hidden" name="ym" value="<?= $ym ?>">
     <?php foreach ($touban as $day => $members) : ?>
       <input type="hidden" name="day[]" value="<?= $day ?>">
-      <input type="hidden" name="day[]" value="<?= $day ?>">
-      <input type="hidden" name="touban[]" value="<?= $members[0]['id'] ?>">
-      <input type="hidden" name="touban[]" value="<?= $members[1]['id'] ?>">
+      <input type="hidden" name="supervisorTouban[]" value="<?= $members[0]['id'] ?>">
+      <input type="hidden" name="memberTouban[]" value="<?= $members[1]['id'] ?>">
     <?php endforeach ?>
       <input type="submit" value="登録する">
     </form>
