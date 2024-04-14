@@ -47,11 +47,12 @@ class CalenderController extends Controller
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-      $touban = $_POST['touban'];
+      $supervisorTouban = $_POST['supervisorTouban'];
+      $memberTouban = $_POST['memberTouban'];
       $day = $_POST['day'];
       $assignedMembers = [];
-      for ($i = 0; $i < count($day); $i+=2) {
-        $assignedMembers[$day[$i]] = [$touban[$i], $touban[$i+1]];
+      for ($i = 0; $i < count($day); $i++) {
+        $assignedMembers[$day[$i]] = [$supervisorTouban[$i], $memberTouban[$i]];
       }
       $yemo = $_POST['ym'];
       $year = mb_substr($yemo, 0, 4);
@@ -191,20 +192,42 @@ class CalenderController extends Controller
         $this->databaseManager->get('Schedule')->rollBack();
         $errors[] = '当番の登録に失敗しました';
       }
-      unset($_SESSION['month']);
-      unset($_SESSION['data']);
-      $_SESSION = [];
-
     }
 
     $scheduleData = $this->databaseManager->get('Schedule')->fetchAllMember(str_replace('-', '', $ym));
 
     $this->databaseManager->makeDbhNull();
 
-    $option = '';
+    $supervisorOption = [];
+    $memberOption = [];
     foreach ($members as $member) {
-      $option .= "<option value=\"{$member['id']}\" >{$member['name']}</option>";
+      if ($member['type_id'] === 1 || $member['type_id'] === 3) {
+        $supervisorOption[$member['id']] = "<option value=\"{$member['id']}\" >{$member['name']}</option>";
+      } 
+      if ($member['type_id'] === 2 || $member['type_id'] === 3) {
+        $memberOption[$member['id']] = "<option value=\"{$member['id']}\" >{$member['name']}</option>";
+      }
     }
+    $schedule = [];
+    if (!empty($scheduleData)) {
+      $options = "";
+      foreach ($scheduleData as $data) {
+        if ($data['isSupervisor']) {
+          $supervisorOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" >{$membersId[$data['member_id']]}</option>";
+          foreach ($supervisorOption as $option) {
+            $options .= $option;
+          }
+          $schedule[$data['day']] .= "<select name=\"supervisorTouban[]\">{$options}</select>";
+        } else {
+          $memberOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" >{$membersId[$data['member_id']]}</option>";
+          foreach ($memberOption as $option) {
+            $options .= $option;
+          }
+          $schedule[$data['day']] .= "<select name=\"memberTouban[]\">{$options}</select>";
+        }
+      }
+  }
+  var_export($schedule);
     for ($day = 1; $day <= $day_count; $day++, $youbi++) {
 
       // 2021-06-3
@@ -217,13 +240,9 @@ class CalenderController extends Controller
         $week .= '<td>' . ' ' . $day;
       }
 
-      if (!empty($scheduleData)) {
-          foreach ($scheduleData as $data) {
-              if ($day == $data['day']) {
-                  $week .= "<input type=\"hidden\" value=\"{$day}\" name=\"day[]\">";
-                  $week .= "<select name=\"touban[]\">{$option}</select>";
-              }
-          }
+      if (!empty($schedule[$day])) {
+        $week .= "<input type=\"hidden\" name=\"day[]\" value=\"{$day}\">";
+        $week .= $schedule[$day];
       }
       $week .= "</td>";
 

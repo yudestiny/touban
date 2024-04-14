@@ -22,18 +22,15 @@ EOT;
   {
     $sql = "DELETE FROM schedule WHERE id IN (SELECT id FROM schedule WHERE year = {$year} and month = {$month})";
     $this->execute($sql);
-    $sql = "INSERT INTO schedule (year, month, day, member_id) VALUES(:year, :month, :day, :member_id)";
+    $sql = "INSERT INTO schedule (year, month, day, member_id, isSupervisor) VALUES($year, $month, :day, :member_id, :isSupervisor)";
     $params = [];
-    var_dump($year);
-    var_dump($members);
-    var_dump($month);
     foreach ($members as $day => $member) {
-      $params[] = [':year', $year, PDO::PARAM_STR];
-      $params[] = [':month', $month, PDO::PARAM_STR];
       $params[] = [':day', $day, PDO::PARAM_STR];
       $params[] = [':member_id', $member[0], PDO::PARAM_STR];
+      $params[] = [':isSupervisor', 1, PDO::PARAM_STR];
       $this->execute($sql, $params);
-      $params[3] = [':member_id', $member[1], PDO::PARAM_STR];
+      $params[1] = [':member_id', $member[1], PDO::PARAM_STR];
+      $params[2] = [':isSupervisor', 0, PDO::PARAM_STR];
       $this->execute($sql, $params);
       $params = [];
     }
