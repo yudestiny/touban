@@ -212,14 +212,17 @@ class CalenderController extends Controller
     if (!empty($scheduleData)) {
       $options = "";
       foreach ($scheduleData as $data) {
+        if (!isset($schedule[$data['day']])) {
+          $schedule[$data['day']] = "";
+        }
         if ($data['isSupervisor']) {
-          $supervisorOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" >{$membersId[$data['member_id']]}</option>";
+          $supervisorOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" selected >{$membersId[$data['member_id']]}</option>";
           foreach ($supervisorOption as $option) {
             $options .= $option;
           }
           $schedule[$data['day']] .= "<select name=\"supervisorTouban[]\">{$options}</select>";
         } else {
-          $memberOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" >{$membersId[$data['member_id']]}</option>";
+          $memberOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" selected >{$membersId[$data['member_id']]}</option>";
           foreach ($memberOption as $option) {
             $options .= $option;
           }
@@ -227,7 +230,6 @@ class CalenderController extends Controller
         }
       }
   }
-  var_export($schedule);
     for ($day = 1; $day <= $day_count; $day++, $youbi++) {
 
       // 2021-06-3
