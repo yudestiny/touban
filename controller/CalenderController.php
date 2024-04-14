@@ -210,18 +210,19 @@ class CalenderController extends Controller
     }
     $schedule = [];
     if (!empty($scheduleData)) {
-      $options = "";
       foreach ($scheduleData as $data) {
         if (!isset($schedule[$data['day']])) {
           $schedule[$data['day']] = "";
         }
         if ($data['isSupervisor']) {
+          $options = "";
           $supervisorOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" selected >{$membersId[$data['member_id']]}</option>";
           foreach ($supervisorOption as $option) {
             $options .= $option;
           }
           $schedule[$data['day']] .= "<select name=\"supervisorTouban[]\">{$options}</select>";
         } else {
+          $options = "";
           $memberOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" selected >{$membersId[$data['member_id']]}</option>";
           foreach ($memberOption as $option) {
             $options .= $option;
