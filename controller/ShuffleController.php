@@ -177,7 +177,14 @@ class ShuffleController extends Controller
       }
     
       // shuffle()は要素が２つ以上ないとエラーになるためif文で確認した後処理、冗長化するため関数化
-      function shuffleTouban ($supervisorList, $memberList, $NoDuplicatedList) {
+      function shuffleTouban ($supervisorList, $memberList) {
+        
+        // 当番を残り少なくとも一回割り当てられるメンバーの数を重複なしにそれぞれ表現
+        $NoDuplicatedList = [];
+        $NoDuplicatedList = [
+          'supervisor' => array_count_values(array_column($supervisorList,'id')),
+          'member' => array_count_values(array_column($memberList,'id'))
+        ];
         if (count($NoDuplicatedList['supervisor']) > 1) {
           shuffle($supervisorList);
         }
@@ -190,7 +197,9 @@ class ShuffleController extends Controller
 
       if (empty($errors)) {
         for ($day = 1; $day <= $day_count; $day++, $youbi++) {
-          
+          if (!empty($errors)) {
+            break;
+          }
           // 2021-06-3
           $date = $ym . '-' . $day;
 
@@ -205,24 +214,33 @@ class ShuffleController extends Controller
         if (!count($minSupervisorList)) {
           $minSupervisorList = [...$minSupervisorList, ...$maxSupervisorList];
           $maxSupervisorList = [];
-        } elseif (!count($minMemberList)) {
+        } 
+        if (!count($minMemberList)) {
           $minMemberList = [...$minMemberList, ...$maxMemberList];
           $maxMemberList = [];
         }
 
-        // 当番を残り少なくとも一回割り当てられるメンバーの数を重複なしにそれぞれ表現
-        $NoDuplicatedList = [
-          'supervisor' => array_count_values(array_column($minSupervisorList,'id')),
-          'member' => array_count_values(array_column($minMemberList,'id'))
-        ];
-
-        if (!empty($toubanbi) && in_array($day, $toubanbi) && count($NoDuplicatedList['supervisor']) > 0 && count($NoDuplicatedList['member']) > 0) {
-          list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList, $NoDuplicatedList);
+        if (!empty($toubanbi) && in_array($day, $toubanbi)) {
+          list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList);
           if ($previousToubanDay) {
             $inARow = (in_array($minSupervisorList[0]['id'], array_column($touban[$previousToubanDay],'id')) || in_array($minMemberList[0]['id'], array_column($touban[$previousToubanDay],'id')));
             while (true) {
               if ($minSupervisorList[0]['id'] === $minMemberList[0]['id'] || $inARow) {
-                list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList, $NoDuplicatedList);
+                list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList);
+                if (count(array_count_values(array_column($minSupervisorList,'id'))) <= 1) {
+                  $minSupervisorList = [...$minSupervisorList, ...$maxSupervisorList];
+                  $maxSupervisorList = [];
+                  if (count(array_count_values(array_column($minSupervisorList,'id'))) <= 1) {
+                    $errors[] = "当番を割り当てるための十分な当直責任者の数が足りませんでした";
+                  }
+                }
+                if (count(array_count_values(array_column($minMemberList,'id'))) <= 1) {
+                  $minMemberList = [...$minMemberList, ...$maxMemberList];
+                  $maxMemberList = [];
+                  if (count(array_count_values(array_column($minMemberList,'id'))) <= 1) {
+                    $errors[] = "当番を割り当てるための十分な当直責任者の数が足りませんでした";
+                  }
+                }
               } else {
                 break;
               }
@@ -230,7 +248,7 @@ class ShuffleController extends Controller
           } else {
             while (true) {
               if ($minSupervisorList[0]['id'] === $minMemberList[0]['id']) {
-                list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList, $NoDuplicatedList);  
+                list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList);  
               } else {
                 break;
               }
