@@ -222,9 +222,10 @@ class ShuffleController extends Controller
 
         if (!empty($toubanbi) && in_array($day, $toubanbi)) {
           list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList);
+
           if ($previousToubanDay) {
-            $inARow = (in_array($minSupervisorList[0]['id'], array_column($touban[$previousToubanDay],'id')) || in_array($minMemberList[0]['id'], array_column($touban[$previousToubanDay],'id')));
             while (true) {
+              $inARow = (in_array($minSupervisorList[0]['id'], array_column($touban[$previousToubanDay],'id')) || in_array($minMemberList[0]['id'], array_column($touban[$previousToubanDay],'id')));
               if ($minSupervisorList[0]['id'] === $minMemberList[0]['id'] || $inARow) {
                 list($minSupervisorList, $minMemberList) = shuffleTouban($minSupervisorList, $minMemberList);
                 if (count(array_count_values(array_column($minSupervisorList,'id'))) <= 1) {
@@ -232,13 +233,15 @@ class ShuffleController extends Controller
                   $maxSupervisorList = [];
                   if (count(array_count_values(array_column($minSupervisorList,'id'))) <= 1) {
                     $errors[] = "当番を割り当てるための十分な当直責任者の数が足りませんでした";
+                    break;
                   }
                 }
                 if (count(array_count_values(array_column($minMemberList,'id'))) <= 1) {
                   $minMemberList = [...$minMemberList, ...$maxMemberList];
                   $maxMemberList = [];
                   if (count(array_count_values(array_column($minMemberList,'id'))) <= 1) {
-                    $errors[] = "当番を割り当てるための十分な当直責任者の数が足りませんでした";
+                    $errors[] = "当番を割り当てるための十分な当直メンバーの数が足りませんでした";
+                    break;
                   }
                 }
               } else {
@@ -299,7 +302,6 @@ class ShuffleController extends Controller
         }
       }
     }
-    var_dump($toubanbi);
     // header('Location:/');
     session_start();
     $_SESSION['data'] = $touban;
