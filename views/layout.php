@@ -9,8 +9,9 @@
 </head>
 
 <body>
-  <header class="container">
-    <a href="/touban"><img style="width: 100px; height: 100px;" class="img-thumbnail" src="https://free-materials.com/adm/wp-content/uploads/2018/12/logo_v04-750x750.png" alt=""></a>
+  <header class="fs-2 py-2 mt-2 ps-4 container bg-body-secondary rounded">
+  <!-- <a href="/touban" class="link-offset-2 link-underline link-underline-opacity-0"><img style="width: 100px; height: 100px;" class="img-thumbnail" src="https://free-materials.com/adm/wp-content/uploads/2018/12/logo_v04-750x750.png" alt=""></a> -->
+  <a href="/touban" class="fw-bold link-warning link-offset-2 link-underline link-underline-opacity-0">touban</a>
   </header>
   <?= $content; ?>
 </body>
