@@ -48,6 +48,13 @@ class RegisterController extends Controller
         $_POST = null;
 }
 
+    // 前月・次月リンクが押された場合は、GETパラメーターから年月を取得
+    if (isset($_GET['ym'])) {
+      $ym = $_GET['ym'];
+    } else {
+      // 今月の年月を表示
+      $ym = date('Y-m');
+    }
     $members = $this->databaseManager->get('Member')->fetchAllName();
 
     $this->databaseManager->makeDbhNull();
@@ -56,6 +63,7 @@ class RegisterController extends Controller
 
     return $this->render(
       [
+        'ym' => $ym,
         'types' => $types,
         'members' => $members,
         'errors' => $errors,
