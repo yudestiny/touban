@@ -1,11 +1,11 @@
 <?php if (!empty($_SERVER['success_message'])) : ?>
-  <div><?= $_SERVER['success_message']; ?></div>
-<?php endif; ?>
+  <div><?= $_SERVER['success_message'] ?></div>
+<?php endif ?>
 <?php if (!empty($errors)) : ?>
   <?php foreach ($errors as $error) : ?>
-    <div><? echo $error; ?></div>
-  <?php endforeach; ?>
-<?php endif; ?>
+    <div><?= $error ?></div>
+  <?php endforeach ?>
+<?php endif ?>
 <div>
   <h3 class="mb-4">
     <a href="?ym=<?= $prev ?>" class="link-offset-2 link-underline link-underline-opacity-0">&lt;</a>
@@ -24,14 +24,14 @@
         <th>土</th>
       </tr>
       <?php foreach ($weeks as $week) : ?>
-        <?= $week; ?>
-      <?php endforeach; ?>
+        <?= $week ?>
+      <?php endforeach ?>
     </table>
     
   <?php if ($action === 'create') : ?>
     <input type="hidden" value=<?= $ym ?> name="ym">
     <input type="submit" value="登録する">
     <div><a href="/touban/">戻る</a></div>
-  <?php endif; ?>
+  <?php endif ?>
   </form>
 </div>

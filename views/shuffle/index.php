@@ -15,14 +15,14 @@
       <th>土</th>
     </tr>
     <?php foreach ($weeks as $week) : ?>
-      <?= $week; ?>
-    <?php endforeach; ?>
+      <?= $week ?>
+    <?php endforeach ?>
   </table>
   <?php if ($errors) : ?>
     <?php foreach ($errors as $error) : ?>
       <?= $error ?>
-    <?php endforeach; ?>
-  <?php endif; ?>
+    <?php endforeach ?>
+  <?php endif ?>
     <?php if ($toubanbi) : ?>
     <h2><a href="?ym=<?= $ym ?>&select=<?= $toubanbi ?>">もう一度割り振る</a></h2>
     <form action="/touban/?ym=<?= $ym ?>" method="POST" name="register">
@@ -38,6 +38,5 @@
       <div>
         <a href="/touban">戻る</a>
       </div>
-    <?php endif; ?>
-    <!-- <div><a href="" onclick="document.register.submit();">登録する</a></div> -->
+    <?php endif ?>
 </div>
