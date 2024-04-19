@@ -4,7 +4,7 @@
     <span class="mx-3"><?= $html_title ?></span>
     <a href="?ym=<?= $next ?>" class="link-offset-2 link-underline link-underline-opacity-0">&gt;</a>
   </h3>
-  <table class="table table-bordered">
+  <table class="table table-bordered table-striped">
     <tr>
       <th>日</th>
       <th>月</th>

@@ -13,16 +13,18 @@
     <a href="?ym=<?= $next ?>" class="link-offset-2 link-underline link-underline-opacity-0">&gt;</a>
   </h3>
   <form action="/touban/" method="POST">
-    <table class="table table-bordered">
-      <tr>
-        <th>日</th>
-        <th>月</th>
-        <th>火</th>
-        <th>水</th>
-        <th>木</th>
-        <th>金</th>
-        <th>土</th>
-      </tr>
+    <table class="table table-bordered table-responsive fw-bold table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th class="mw-25">日</th>
+          <th class="mw-25">月</th>
+          <th class="mw-25">火</th>
+          <th class="mw-25">水</th>
+          <th class="mw-25">木</th>
+          <th class="mw-25">金</th>
+          <th class="mw-25">土</th>
+        </tr>
+      </thead>
       <?php foreach ($weeks as $week) : ?>
         <?= $week ?>
       <?php endforeach ?>

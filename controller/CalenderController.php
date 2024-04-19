@@ -82,15 +82,15 @@ class CalenderController extends Controller
       $date = $ym . '-' . $day;
       if ($today == $date) {
         // 今日の日付の場合は、class="today"をつける
-        $week .= '<td class="today">' . $day;
+        $week .= '<td class="today border">' . $day;
       } else {
-        $week .= '<td>' . ' ' . $day;
+        $week .= '<td class="w-10">' . ' ' . $day;
       }
 
       if (!empty($scheduleData) && in_array($day, array_column($scheduleData, 'day'))) {
           foreach ($scheduleData as $data) {
               if ($day == $data['day']) {
-                  $week .= '   ' . $members[$data['member_id']];
+                  $week .= "&emsp;".$members[$data['member_id']];
               }
           }
       }
