@@ -9,11 +9,18 @@
 </head>
 
 <body>
-  <header class="fs-2 py-2 mt-2 ps-4 container bg-body-secondary rounded">
+  <header class="fw-bold fs-2 m-4 ps-4 bg-body-secondary rounded d-flex align-items-center ">
   <!-- <a href="/touban" class="link-offset-2 link-underline link-underline-opacity-0"><img style="width: 100px; height: 100px;" class="img-thumbnail" src="https://free-materials.com/adm/wp-content/uploads/2018/12/logo_v04-750x750.png" alt=""></a> -->
-  <a href="/touban" class="fw-bold link-warning link-offset-2 link-underline link-underline-opacity-0">touban</a>
-  </header>
+  <a href="/touban" class="me-auto link-warning link-offset-2 link-underline link-underline-opacity-0">touban</a>
+  <div class="d-flex">
+    <a href="shuffle?ym=<?= $ym ?>" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">シャッフル</a>
+    <a href="create?ym=<?= $ym ?>" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">メンバーの割り当て・編集</a>
+    <a href="register" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">メンバー登録</a>
+  </div>
+</header>
+<div class="p-4 m-4 bg-body-secondary rounded">
   <?= $content; ?>
+</div>
 </body>
 
 </html>

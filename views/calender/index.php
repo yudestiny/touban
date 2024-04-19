@@ -6,7 +6,7 @@
     <div><? echo $error; ?></div>
   <?php endforeach; ?>
 <?php endif; ?>
-<div class="container mt-5">
+<div>
   <h3 class="mb-4"><a href="?ym=<?= $prev ?>">&lt;</a><span class="mx-3"><?= $html_title ?></span><a href="?ym=<?= $next ?>">&gt;</a></h3>
   <form action="/touban/" method="POST">
     <table class="table table-bordered">
@@ -30,9 +30,4 @@
     <div><a href="/touban/">戻る</a></div>
   <?php endif; ?>
   </form>
-  <?php if ($action === 'index') : ?>
-    <h2><a href="shuffle?ym=<?= $ym ?>">当番日を選択する</a></h2>
-    <h2><a href="create?ym=<?= $ym ?>">カレンダー上のメンバーの割り当て・編集</a></h2>
-    <div><a href="register">メンバーを新規登録する</a></div>
-  <?php endif; ?>
 </div>
