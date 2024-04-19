@@ -1,5 +1,9 @@
 <div class="container mt-5">
-  <h3 class="mb-4"><span class="mx-3"><?php echo $html_title ?></span></h3>
+  <h3 class="mb-4">
+    <a href="?ym=<?= $prev ?>" class="link-offset-2 link-underline link-underline-opacity-0">&lt;</a>
+    <span class="mx-3"><?= $html_title ?></span>
+    <a href="?ym=<?= $next ?>" class="link-offset-2 link-underline link-underline-opacity-0">&gt;</a>
+  </h3>
   <table class="table table-bordered">
     <tr>
       <th>日</th>
