@@ -227,7 +227,7 @@ class CalenderController extends Controller
           foreach ($memberOption as $option) {
             $options .= $option;
           }
-          $schedule[$data['day']] .= "<select name=\"memberTouban[]\">{$options}</select>";
+          $schedule[$data['day']] .= "&emsp;"."<select name=\"memberTouban[]\">{$options}</select>";
         }
       }
   }
@@ -244,7 +244,7 @@ class CalenderController extends Controller
       }
 
       if (!empty($schedule[$day])) {
-        $week .= "<input type=\"hidden\" name=\"day[]\" value=\"{$day}\">";
+        $week .= "&emsp;<input type=\"hidden\" name=\"day[]\" value=\"{$day}\">";
         $week .= $schedule[$day];
       }
       $week .= "</td>";
