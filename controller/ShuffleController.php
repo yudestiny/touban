@@ -174,7 +174,7 @@ class ShuffleController extends Controller
       }
       // 選択した当番日数に対して割り当てられるメンバーが不足している場合エラーにて処理
       if ($toubanbi && count($toubanbi) >count($judging)) {
-        $errors[] = '選択した当番日数を満たすメンバーの数が足りません';
+        $errors['memberOver'] = '選択した当番日数を満たすメンバーの数が足りません';
       }
     
       // shuffle()は要素が２つ以上ないとエラーになるためif文で確認した後処理、冗長化するため関数化
