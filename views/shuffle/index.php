@@ -20,23 +20,26 @@
   </table>
   <?php if ($errors) : ?>
     <?php foreach ($errors as $error) : ?>
-      <?= $error ?>
+      <div class="justify-content-center text-center">
+        <?= $error ?>
+      </div>
     <?php endforeach ?>
   <?php endif ?>
-    <?php if ($toubanbi) : ?>
-    <h2><a href="?ym=<?= $ym ?>&select=<?= $toubanbi ?>">もう一度割り振る</a></h2>
+  <?php if ($toubanbi && empty($errors['memberOver'])) : ?>
     <form action="/touban/?ym=<?= $ym ?>" method="POST" name="register">
-    <input type="hidden" name="ym" value="<?= $ym ?>">
-    <?php foreach ($touban as $day => $members) : ?>
-      <input type="hidden" name="day[]" value="<?= $day ?>">
-      <input type="hidden" name="supervisorTouban[]" value="<?= $members[0]['id'] ?>">
-      <input type="hidden" name="memberTouban[]" value="<?= $members[1]['id'] ?>">
-    <?php endforeach ?>
-      <input type="submit" value="登録する">
-    </form>
+      <input type="hidden" name="ym" value="<?= $ym ?>">
+      <?php foreach ($touban as $day => $members) : ?>
+        <input type="hidden" name="day[]" value="<?= $day ?>">
+        <input type="hidden" name="supervisorTouban[]" value="<?= $members[0]['id'] ?>">
+        <input type="hidden" name="memberTouban[]" value="<?= $members[1]['id'] ?>">
+        <?php endforeach ?>
+        <div class="align-items-center px-2 d-flex justify-content-between">
+          <a href="?ym=<?= $ym ?>&select=<?= $toubanbi ?>" class="link-dark link-offset-2 link-underline link-underline-opacity-0">もう一度割り振る</a>
+          <input type="submit" value="登録する" class="btn btn-warning">
+        </div>
+      </form>
     <?php else : ?>
-      <div>
-        <a href="/touban">戻る</a>
+      <div>        
+        <a href="/touban/" class="link-dark link-offset-2 link-underline link-underline-opacity-0">戻る</a>
       </div>
     <?php endif ?>
-</div>

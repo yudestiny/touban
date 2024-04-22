@@ -15,10 +15,12 @@
         <?= $week; ?>
       <?php endforeach; ?>
   </table>
-<button type="submit">当番を割り振る</button>
-    </form>
-  <div>
-    <a href="/touban">戻る</a>
+    <div class="align-items-center px-2 d-flex justify-content-between">
+        <a href="/touban/" class="link-dark link-offset-2 link-underline link-underline-opacity-0">戻る</a>
+        <input type="submit" value="当番を割り振る" class="btn btn-warning">
+      </div>
+      </form>
+    <div>
   </div>
 </div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
