@@ -32,9 +32,9 @@
     
   <?php if ($action === 'create') : ?>
     <input type="hidden" value=<?= $ym ?> name="ym">
-    <div class="align-items-center d-flex justify-content-between">
+    <div class="align-items-center px-2 d-flex justify-content-between">
       <a href="/touban/" class="link-dark link-offset-2 link-underline link-underline-opacity-0">戻る</a>
-      <input type="submit" value="登録する" class="">
+      <input type="submit" value="登録する" class="btn btn-warning">
     </div>
   <?php endif ?>
   </form>

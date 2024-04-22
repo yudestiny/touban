@@ -220,14 +220,16 @@ class CalenderController extends Controller
           foreach ($supervisorOption as $option) {
             $options .= $option;
           }
-          $schedule[$data['day']] .= "<select name=\"supervisorTouban[]\">{$options}</select>";
+          $schedule[$data['day']] .= "<select class=\"form-select\" name=\"supervisorTouban[]\">{$options}</select>";
         } else {
           $options = "";
           $memberOption[$data['member_id']] = "<option value=\"{$data['member_id']}\" selected >{$membersId[$data['member_id']]}</option>";
           foreach ($memberOption as $option) {
             $options .= $option;
           }
-          $schedule[$data['day']] .= "&emsp;"."<select name=\"memberTouban[]\">{$options}</select>";
+            $schedule[$data['day']] .= "<select class=\"form-select\" name=\"memberTouban[]\">{$options}</select>";
+          
+          // $schedule[$data['day']] .= "&emsp;"."<select name=\"memberTouban[]\">{$options}</select>";
         }
       }
   }
@@ -238,16 +240,16 @@ class CalenderController extends Controller
 
       if ($today == $date) {
         // 今日の日付の場合は、class="today"をつける
-        $week .= '<td class="today">' . $day;
+        $week .= '<td class="today w-25">'. ' ' . $day. '<div class="input-group input-group-sm mb-3">' ;
       } else {
-        $week .= '<td>' . ' ' . $day;
+        $week .= '<td class="w-25">'  . ' ' . $day. '<div class="input-group input-group-sm mb-3">';
       }
 
       if (!empty($schedule[$day])) {
         $week .= "&emsp;<input type=\"hidden\" name=\"day[]\" value=\"{$day}\">";
         $week .= $schedule[$day];
       }
-      $week .= "</td>";
+      $week .= '</div>' . "</td>";
 
 
       // 週終わり、または、月終わりの場合
@@ -256,7 +258,7 @@ class CalenderController extends Controller
         if ($day == $day_count) {
           // 月の最終日の場合、空セルを追加
           // 例）最終日が水曜日の場合、木・金・土曜日の空セルを追加
-          $week .= str_repeat('<td></td>', 6 - $youbi % 7);
+          $week .= str_repeat('<td class="w-25"></td>', 6 - $youbi % 7);
         }
 
         // weeks配列にtrと$weekを追加する
