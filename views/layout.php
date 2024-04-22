@@ -13,9 +13,9 @@
   <!-- <a href="/touban" class="link-offset-2 link-underline link-underline-opacity-0"><img style="width: 100px; height: 100px;" class="img-thumbnail" src="https://free-materials.com/adm/wp-content/uploads/2018/12/logo_v04-750x750.png" alt=""></a> -->
   <a href="/touban" class="me-auto link-warning link-offset-2 link-underline link-underline-opacity-0">touban</a>
   <div class="d-flex">
-    <a href="shuffle?ym=<?= $ym ?>" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">シャッフル</a>
-    <a href="create?ym=<?= $ym ?>" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">メンバーの割り当て・編集</a>
-    <a href="register" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">メンバー登録</a>
+    <a href="/touban/shuffle?ym=<?= $ym ?>" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">シャッフル</a>
+    <a href="/touban/create?ym=<?= $ym ?>" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">メンバーの割り当て・編集</a>
+    <a href="/touban/register" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">メンバー登録</a>
   </div>
 </header>
 <div class="p-4 m-4 bg-body-secondary rounded">
