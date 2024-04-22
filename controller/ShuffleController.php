@@ -50,7 +50,8 @@ class ShuffleController extends Controller
         $week .= '<td>';
       }
 
-      $week .= "{$day}<input type=\"checkbox\" value=\"{$day}\" name=\"select[]\"></td>";
+      $week .= "<input type=\"checkbox\" class=\"btn-check\" value=\"{$day}\" name=\"select[]\">
+      <label class=\"btn btn-primary w-100\">$day</label></td>";
 
       // 週終わり、または、月終わりの場合
       if ($youbi % 7 == 6 || $day == $day_count) {
