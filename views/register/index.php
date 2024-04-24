@@ -12,21 +12,36 @@
   <?php endforeach; ?>
 <?php endif; ?>
 <!-- <?php var_dump($errors) ?> -->
-<div>
+<div class="container">
   <form action="" method="POST" >
-    <label for="name">名前</label>
-    <input type="text" id="name" name="name">
-    <label for="max">タイプ</label>
-    <select name="type" >
-      <?php foreach($types as $id => $name) : ?>
-    <option value="<?= $id ?>"><?= $name ?></option>
-      <?php endforeach ?>
-    </select>
-    <label for="max">当番最大回数</label>
-    <input type="number" id="max" name="max"/>
-    <label for="min">当番最小回数</label>
-    <input type="number" id="min" name="min"/>
-    <input type="submit" value="登録する" />
+    <div class="d-flex justify-content-around p-4">
+      <div>
+        <label for="name">名前</label>
+        <input type="text" id="name" name="name">
+      </div>
+      <div>
+        <label for="max">タイプ</label>
+        <select name="type" >
+          <?php foreach($types as $id => $name) : ?>
+            <option value="<?= $id ?>"><?= $name ?></option>
+          <?php endforeach ?>
+        </select>
+      </div>
+    </div>
+    <div class="d-flex justify-content-around p-4">
+      <div>
+        <label for="max">当番最大回数</label>
+        <input type="number" id="max" name="max"/>
+      </div>
+      <div>
+        <label for="min">当番最小回数</label>
+        <input type="number" id="min" name="min"/>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end p-4">
+      <input type="submit" value="登録する" class="btn btn-warning">
+
+    </div>
   </form>
   <iframe src="" name="iframe" frameborder="0"></iframe>
   <div>
