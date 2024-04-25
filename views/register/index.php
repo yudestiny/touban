@@ -12,9 +12,10 @@
   <?php endforeach; ?>
 <?php endif; ?>
 <!-- <?php var_dump($errors) ?> -->
-<div class="container">
+<div class="container bg-light p-3 m-4 rounded">
+  <p class="fw-bold">入力フォーム</p>
   <form action="" method="POST" >
-    <div class="d-flex justify-content-around p-4">
+    <div class="d-flex justify-content-around p-2">
       <div>
         <label for="name">名前</label>
         <input type="text" id="name" name="name">
@@ -38,21 +39,29 @@
         <input type="number" id="min" name="min"/>
       </div>
     </div>
-    <div class="d-flex justify-content-end p-4">
+    <div class="d-flex justify-content-end p-2">
       <input type="submit" value="登録する" class="btn btn-warning">
 
     </div>
   </form>
-  <iframe src="" name="iframe" frameborder="0"></iframe>
-  <div>
-    <p>社員一覧（編集）</p>
+</div>
+  <div class="container bg-light p-3 m-4 rounded">
+    <p class="fw-bold">社員一覧（編集）</p>
     <?php foreach ($members as $member) : ?>
-      <p>
-        <a href="editor?id=<?= $member['id'] ?>"><?= $member['name'];  ?></a>
-            タイプ：<?= $types[$member['type_id']] ?>,  当番回数: 最大<?= $member['maxLimit']; ?>, 最小:<?= $member['minLimit']; ?>
-      </p>
+      <ul class="list-group list-group-horizontal justify-content-center me-auto">
+        <a href="editor?id=<?= $member['id'] ?>">
+          <li class="list-group-item fw-bold">
+            <?= $member['name'];  ?>
+          </li>
+        </a>
+        <li class="list-group-item">
+          タイプ：<?= $types[$member['type_id']] ?>
+        </li>
+        <li class="list-group-item">
+          当番回数: 最大<?= $member['maxLimit']; ?>, 最小:<?= $member['minLimit']; ?>
+        </li>
+      </ul>
     <?php endforeach; ?>
   </div>
 
-</div>
 <?php
