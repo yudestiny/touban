@@ -50,7 +50,6 @@ class EditorController extends Controller
       header('Location:/touban/register');
       exit();
       }
-      // Header('Location:' . $_SERVER['REQUEST_URI']);
     }
     $members = $this->databaseManager->get('Member')->fetchAllName();
 

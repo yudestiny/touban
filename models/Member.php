@@ -7,9 +7,6 @@ class Member extends DatabaseModel
   public function fetchAllName($order = '')
   {
     $sql = 'SELECT * FROM members';
-    // if ($order) {
-    //   $sql .= ' ORDER BY maxLimit ' . $order;
-    // }
     return $this->fetchAll($sql);
   }
 
