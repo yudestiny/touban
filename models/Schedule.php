@@ -5,8 +5,6 @@ class Schedule extends DatabaseModel
     public function registerSchedule($tableName)
   {
 
-    // if (!in_array($tableName, $this->tables)) {
-    // }
     $sql = <<<EOT
           CREATE TABLE IF NOT EXISTS {$tableName}
           (

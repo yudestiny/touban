@@ -11,7 +11,6 @@
     <p><?= $error; ?></p>
   <?php endforeach; ?>
 <?php endif; ?>
-<!-- <?php var_dump($errors) ?> -->
 <div class="container bg-light p-3 m-4 rounded">
   <p class="fw-bold">入力フォーム</p>
   <form action="" method="POST" >

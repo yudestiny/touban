@@ -5,12 +5,9 @@ class CalenderController extends Controller
   public function index()
   {
 
-    // ini_set("memory_limit", "3072M");
-    // ini_set("memory_limit", "-1");
     $errors = [];
 
     date_default_timezone_set('Asia/Tokyo');
-    $list = [];
 
     // 前月・次月リンクが押された場合は、GETパラメーターから年月を取得
     if (isset($_GET['ym'])) {
@@ -228,8 +225,6 @@ class CalenderController extends Controller
             $options .= $option;
           }
             $schedule[$data['day']] .= "<select class=\"form-select\" name=\"memberTouban[]\">{$options}</select>";
-          
-          // $schedule[$data['day']] .= "&emsp;"."<select name=\"memberTouban[]\">{$options}</select>";
         }
       }
   }

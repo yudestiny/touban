@@ -303,7 +303,6 @@ class ShuffleController extends Controller
         }
       }
     }
-    // header('Location:/');
     session_start();
     $_SESSION['data'] = $touban;
     $_SESSION['month'] = str_replace('-', '', $ym);
