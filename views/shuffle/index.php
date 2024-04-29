@@ -5,15 +5,11 @@
     <a href="?ym=<?= $next ?>" class="link-offset-2 link-underline link-underline-opacity-0">&gt;</a>
   </h3>
   <table class="table table-bordered table-striped">
-    <tr>
-      <th>日</th>
-      <th>月</th>
-      <th>火</th>
-      <th>水</th>
-      <th>木</th>
-      <th>金</th>
-      <th>土</th>
-    </tr>
+  <tr>
+          <?php foreach (["日", "月", "火", "水", "木", "金", "土"] as $day) : ?>
+          <th class="mw-25 text-center"><?= $day ?></th>
+          <?php endforeach ?>
+        </tr>
     <?php foreach ($weeks as $week) : ?>
       <?= $week ?>
     <?php endforeach ?>

@@ -170,8 +170,6 @@ class CalenderController extends Controller
 
       $touban = $_POST['touban'];
       $day = $_POST['day'];
-      var_dump($touban);
-      var_dump($day);
       $assignedMembers = [];
       for ($i = 0; $i < count($day); $i+=2) {
         $assignedMembers[$day[$i]] = [$touban[$i], $touban[$i+1]];

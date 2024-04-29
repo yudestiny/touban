@@ -16,13 +16,9 @@
     <table class="table table-bordered table-responsive fw-bold table-striped">
       <thead class="table-dark">
         <tr>
-          <th class="mw-25">日</th>
-          <th class="mw-25">月</th>
-          <th class="mw-25">火</th>
-          <th class="mw-25">水</th>
-          <th class="mw-25">木</th>
-          <th class="mw-25">金</th>
-          <th class="mw-25">土</th>
+          <?php foreach (["日", "月", "火", "水", "木", "金", "土"] as $day) : ?>
+          <th class="mw-25 text-center"><?= $day ?></th>
+          <?php endforeach ?>
         </tr>
       </thead>
       <?php foreach ($weeks as $week) : ?>

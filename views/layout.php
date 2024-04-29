@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <header class="fw-bold fs-2 m-4 ps-4 bg-body-secondary rounded d-flex align-items-center ">
+  <header class="fw-bold fs-2 mb-4 mx-4 mt-1 ps-4 bg-body-secondary rounded d-flex align-items-center ">
   <a href="/touban" class="me-auto link-warning link-offset-2 link-underline link-underline-opacity-0">touban</a>
   <div class="d-flex">
     <a href="/touban/shuffle?ym=<?= $ym ?>" class="border p-2 fs-5 rounded link-warning link-offset-2 link-underline link-underline-opacity-0">シャッフル</a>
